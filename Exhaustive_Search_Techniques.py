@@ -21,7 +21,7 @@ class Graph:
     def dfs(self,start,goal):
         opened,closed=[start],[]
         while opened:
-            p=opened.pop()
+            p=opened.pop(0)
             closed.append(p)
             if p==goal:print('Goal node found');return closed
             c=0
@@ -40,7 +40,21 @@ dfs_path=g.dfs(start,goal)
 print(bfs_path)
 print(dfs_path)
 
-
+#sample Input output
+'''Enter no.of Edges: 6
+Enter u v :a b
+Enter u v :a c
+Enter u v :b d
+Enter u v :b e
+Enter u v :b f
+Enter u v :c i
+Start node: a
+Goal node: e
+Goal node found
+Goal node found
+['a', 'b', 'c', 'd', 'e']
+['a', 'b', 'd', 'e']
+'''
 
 
 '''DFID'''
@@ -79,7 +93,30 @@ for _ in range(n):                              # Enter  Space seperated edge no
 start,goal=input('Enter start and goal nodes : ').split()
 g.dfid(start,goal)
 
-
+#sample I/O
+'''
+No.of edges : 6
+Enter Edge nodes : a b
+Enter Edge nodes : a c
+Enter Edge nodes : b d
+Enter Edge nodes : b e
+Enter Edge nodes : b f
+Enter Edge nodes : c i
+Enter start and goal nodes : a e
+DFID with depth =  0
+a   []   ['a']
+DFID with depth =  1
+a   [['b', 1], ['c', 1]]   ['a']
+c   [['b', 1]]   ['a', 'c']
+b   []   ['a', 'c', 'b']
+DFID with depth =  2
+a   [['b', 1], ['c', 1]]   ['a']
+c   [['b', 1], ['i', 2]]   ['a', 'c']
+i   [['b', 1]]   ['a', 'c', 'i']
+b   [['d', 2], ['e', 2], ['f', 2]]   ['a', 'c', 'i', 'b']
+f   [['d', 2], ['e', 2]]   ['a', 'c', 'i', 'b', 'f']
+e   [['d', 2]]   ['a', 'c', 'i', 'b', 'f', 'e']
+Goal found'''
 
 
 #bi-directional
