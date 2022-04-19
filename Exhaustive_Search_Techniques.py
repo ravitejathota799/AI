@@ -82,43 +82,61 @@ g.dfid(start,goal)
 
 
 
-''' Bidirectional '''
+#bi-directional
+
 from collections import defaultdict
+
 class Graph:
-    def __init__(self):
-        self.graph=defaultdict(list)
-        
-    def addEdge(self, u, v):
-        self.graph[u].append(v)
-        self.graph[v].append(u)
-        
-    def bds(self, start, goal):
-        fopen,bopen,fclose,bclose=[],[],[],[]
-        fopen.append(start)
-        bopen.append(goal)
-        print(fopen,bopen,fclose,bclose,sep='\t\t')
-        while fopen and bopen:
-            p=fopen.pop(0)
-            q=bopen.pop(0)
-            if p==q:print('Goal node found');return
-            if p not in fclose:fclose.append(p)
-            if q not in bclose:bclose.insert(0,q)
-            # Generate Succesors :-
-            for v in self.graph[p]:
-                if v not in fclose:fopen.append(v)
-            for v in self.graph[q]:
-                if v not in bclose:bopen.append(v)
-            print(fopen,bopen,fclose,bclose,sep='\t\t')
-            # Goal Case :-
-            for i in fopen:
-                if i in bopen:print('Goal node found');return
-        print('Goal node not found')
-        
-n=int(input('Enter no.of nodes : '))
-m=int(input('Enter no.of edges : '))
-g=Graph()
-for _ in range(m):
-    u,v=input('Enter edge nodes : ').split()
-    g.addEdge(u,v)
-start, goal=input('Enter start and goal nodes : ').split()
-g.bds(start, goal
+  def __init__(self):
+    self.g = defaultdict(list)
+    self.c1,self.c2 = [],[]
+
+  def addedge(self,u,v):
+    self.g[u].append(v)
+    self.g[v].append(u)
+
+  def bidirectional(self,start,goal):
+    o1,o2 = [],[]
+    o1.append(start)
+    o2.append(goal)
+    while o1 and o2:
+      t1 = o1.pop(0)
+      self.c1.append(t1)
+      t2 = o2.pop(0)
+      self.c2.append(t2)
+      for i in self.g[t1]:
+        if i not in self.c1:
+          o1.append(i)
+      for i in self.g[t2]:
+        if i not in self.c2:
+          o2.append(i)
+      for i in o1:
+        if i in o2:print(o1, " ", self.c1, " ", o2, " ", self.c2); print('Goal Found'); return
+      print(o1, " ", self.c1, " ", o2, " ", self.c2)
+    print("Not found")
+
+g = Graph()
+n = int(input("No.of edges...."))
+for i in range(n):
+  u,v = input().split()
+  g.addedge(u,v)
+start, goal = input().split()
+g.bidirectional(start,goal)
+
+#SAMPLE INPUT & OUTPUT
+
+'''
+No.of edges....9
+a b
+a c
+a d
+b e
+b f
+c g
+c h
+d i
+d j
+a z
+['b', 'c', 'd']   ['a']   []   ['z']
+Not found
+'''
