@@ -227,3 +227,202 @@ def game():
             print("A.I won.")
             break
 game()
+
+
+
+
+#Another Approach
+
+
+
+
+theBoard={'7':2,'8':2,'9':2,'4':2,'5':2,'6':2,'1':2,'2':2,'3':2}
+board_keys=[]
+for key in theBoard:
+    board_keys.append(key)
+def printBoard(board):
+    print(str(board['7'])+'|'+str(board['8'])+'|'+str(board['9']))
+    print('-+-+-')
+    print(str(board['4'])+'|'+str(board['5'])+'|'+str(board['6']))
+    print('-+-+-') b
+    print(str(board['1'])+'|'+str(board['2'])+'|'+str(board['3']))
+
+def make():
+    if theBoard['5']==2:
+        return '5'
+    elif theBoard['2']==2:
+        return '2'
+    elif theBoard['4']==2:
+        return '4'
+    elif theBoard['6']==2:
+        return '6'
+    elif theBoard['8']==2:
+        return '8'
+
+def switch_player(count):
+    current_player='C' if count%2!=0 else 'H'
+    return current_player
+
+
+def go(move):
+    theBoard[str(move)]=5
+
+def posswin():
+        if theBoard['7']*theBoard['8']*theBoard['9']==18 or theBoard['7']*theBoard['8']*theBoard['9']==50:
+            if theBoard['7']==2:
+                return 7
+            elif theBoard['8']==2:
+                return 8
+            else:
+                return 9
+        elif theBoard['4']*theBoard['5']*theBoard['6']==18 or theBoard['4']*theBoard['5']*theBoard['6']==50:
+            if theBoard['4']==2:
+                return 4
+            elif theBoard['5']==2:
+                return 5
+            else:
+                return 6
+        elif theBoard['1']*theBoard['2']*theBoard['3']==18 or theBoard['1']*theBoard['2']*theBoard['3']==50:
+            if theBoard['1']==2:
+                return 1
+            elif theBoard['2']==2:
+                return 2
+            else:
+                return 3
+        elif theBoard['1']*theBoard['4']*theBoard['7']==18 or theBoard['1']*theBoard['4']*theBoard['7']==50:
+            if theBoard['1']==2:
+                return 1
+            elif theBoard['4']==2:
+                return 4
+            else:
+                return 7
+        elif theBoard['2']*theBoard['5']*theBoard['8']==18 or theBoard['2']*theBoard['5']*theBoard['8']==50:
+            if theBoard['2']==2:
+                return 2
+            elif theBoard['5']==2:
+                return 5
+            else:
+                return 8
+        elif theBoard['3']*theBoard['6']*theBoard['9']==18 or theBoard['3']*theBoard['6']*theBoard['9']==50:
+            if theBoard['3']==2:
+                return 3
+            elif theBoard['6']==2:
+                return 6
+            else:
+                return 9
+        elif theBoard['1']*theBoard['5']*theBoard['9']==18 or theBoard['1']*theBoard['5']*theBoard['9']==50:
+            if theBoard['1']==2:
+                return 1
+            elif theBoard['5']==2:
+                return 5
+            else:
+                return 9
+        elif theBoard['3']*theBoard['5']*theBoard['7']==18 or theBoard['3']*theBoard['5']*theBoard['7']==50:
+            if theBoard['3']==2:
+                return 3
+            elif theBoard['5']==2:
+                return 5
+            else:
+                return 7
+        else:
+            return 0
+       
+       
+def checkwin(current_player):
+    if current_player=='C':
+        turn="player"
+    else:
+        turn="computer"
+   
+    if theBoard['7']==theBoard['8']==theBoard['9']!=2:
+        printBoard(theBoard)
+        print("Game Over!!!.")
+        print(" *** "+turn+" won. *** ")
+        return 1
+    elif theBoard['4']==theBoard['5']==theBoard['6']!=2:
+        printBoard(theBoard)
+        print("Game Over!!!.")
+        print(" *** "+turn+" won. *** ")
+        return 1
+    elif theBoard['1']==theBoard['2']==theBoard['3']!=2:
+        printBoard(theBoard)
+        print("Game Over!!!.\n")
+        print(" *** "+turn+" won. *** ")
+        return 1
+    elif theBoard['1']==theBoard['4']==theBoard['7']!=2:
+        printBoard(theBoard)
+        print("Game Over!!!.\n")
+        print(" *** "+turn+" won. *** ")
+        return 1
+    elif theBoard['2']==theBoard['5']==theBoard['8']!=2:
+        printBoard(theBoard)
+        print("Game Over!!!.\n")
+        print(" *** "+turn+" won. *** ")
+        return 1
+    elif theBoard['3']==theBoard['6']==theBoard['9']!=2:
+        printBoard(theBoard)
+        print("Game Over!!!.\n")
+        print(" *** "+turn+" won. *** ")
+        return 1
+    elif theBoard['7']==theBoard['5']==theBoard['3']!=2:
+        printBoard(theBoard)
+        print("Game Over!!!.\n")
+        print(" *** "+turn+" won. *** ")
+        return 1
+    elif theBoard['1']==theBoard['5']==theBoard['9']!=2:
+        printBoard(theBoard)
+        print("Game Over!!!.\n")
+        print(" *** "+turn+" won. *** ")
+        return 1
+    return 0
+           
+       
+       
+def game():
+    count=0
+    current_player="H"
+    for i in range(9):
+        printBoard(theBoard)
+        if current_player=="H":
+            print("It's your turn.Move to which place?")
+            move=input()
+            if theBoard[move]==2:
+                theBoard[move]=3
+                count+=1
+            else:
+                print("That place is already filled.\nMove to which place?")
+                move=input()
+                while theBoard[move]!=2:
+                    print("That place is already filled.\nMove to which place?")
+                    move=input()
+                theBoard[move]=3
+                count+=1
+            current_player=switch_player(count)
+        else:
+            poss=posswin()
+            if poss==0:
+                x=make()
+                go(x)
+            else:
+                go(poss)
+            print("\nComputer's move\n")
+            count+=1
+            current_player=switch_player(count)
+       
+        if count>=5:
+            flag=checkwin(current_player)
+            if flag:
+                break
+        if count==9:
+            printBoard(theBoard)
+            print("Game Over.\n")
+            print("it's a tie!!!")
+    restart=input("Do you want to play again?(y/n)")
+    if restart=="y" or restart=="Y":
+        for key in board_keys:
+            theBoard[key]=2
+        game()
+     
+
+if __name__=="__main__":
+    game()
