@@ -188,54 +188,62 @@ Goal node found
 '''
 
 
-'''Hill Climbing'''
+#Hillclimbing
+
 from collections import defaultdict
+
 class Graph:
-    def __init__(self,n,h):
-        self.n=n
-        self.h=h
-        self.graph=defaultdict(list)
-    
-    def addEdge(self,u,v):
-        self.graph[u].append(v)
-        self.graph[v].append(u)
+  def __init__(self):
+    self.g = defaultdict(list)
+    self.h = {}
+
+  def addh(self,v,value):
+    self.h[v]=value
+
+  def addedge(self,u,v):
+    self.g[u].append(v)
+    self.g[v].append(u)
+
+  def pgraph(self):
+    print(self.g)
+    print(self.h)
+
+  def hill(self,start,goal):
+    opened,closed = [],[]
+    opened.append(start)
+    while opened:
+      t = opened.pop(0)
+      closed.append(t)
+      li = []
+      opened.sort(key = lambda x: self.h[x])
+      if t == goal: print("Goal found"); print(opened, " ", closed); return 1
+      for i in self.g[t]:
+        if i not in closed+opened:
+          li.append(i)
+      opened = li + opened
+      print(opened, " ", closed)
+    print("Not found")
+
+
+if __name__=='__main__':
+
+  g = Graph()
+  n = int(input("no.of nodes???"))
+  for i in range(n):
+    li = list(map(str,input().split()))
+    g.addh(li[0],int(li[1]))
+  m = int(input("no.of edges???"))
+  for i in range(m):
+    u,v = input().split()
+    g.addedge(u,v)
+
+  #g.pgraph()
+  u,v = input("Enter start and goal states: ").split()
+  g.hill(u,v)
   
-    def hillClimb(self,start,goal):
-        print('Hill Climbing Search : ')
-        print("open","close",sep='\t\t\t')
-        opened,closed=[],[]
-        opened.append(start)
-        print(opened, closed, sep='\t\t\t')
-        while opened:
-            p=opened.pop(0)
-            closed.insert(0,p)
-            opened.sort(key=lambda x: self.h[x])
-            #Goal node
-            if p==goal:
-                print(opened,closed,sep='\t\t\t')
-                print('Goal node found');return
-            #Successors Generation
-            for v in self.graph[p]:
-                if v not in opened and v not in closed:opened.insert(0,v)
-            print(opened,closed,sep='\t\t\t')
-        print('Goal node not found')
-
-n=int(input('Enter no.of nodes: '))
-h={}
-for _ in range(n):
-    u,i=input('Enter node and it\'s heuristic: ').split()
-    h[u]=int(i)
-g=Graph(n,h)
-m=int(input('Enter no.of edges: '))
-for _ in range(m):
-    u,v=input('Enter edge nodes: ').split()
-    g.addEdge(u,v)
-start,goal=input('Enter start and goal states: ').split()
-g.hillClimb(start,goal)
-
-# Sample input: 
-'''
-12
+  #SAMPLE INPUT & OUTPUT
+  '''
+no.of nodes???12
 a 10
 b 10
 i 8
@@ -248,7 +256,7 @@ e 5
 j 6
 g 3
 m 0
-11
+no.of edges???11
 a b
 a i
 a f
@@ -261,20 +269,16 @@ f g
 e j
 j m
 a j
+['b', 'i', 'f']   ['a']
+['d', 'c', 'f', 'i']   ['a', 'b']
+['c', 'f', 'i']   ['a', 'b', 'd']
+['h', 'f', 'i']   ['a', 'b', 'd', 'c']
+['f', 'i']   ['a', 'b', 'd', 'c', 'h']
+['e', 'g', 'i']   ['a', 'b', 'd', 'c', 'h', 'f']
+['j', 'g', 'i']   ['a', 'b', 'd', 'c', 'h', 'f', 'e']
+Goal found
+['g', 'i']   ['a', 'b', 'd', 'c', 'h', 'f', 'e', 'j']
 '''
-# Sample output: 
-'''
-Best First Search : 
-open            close
-['a']           []
-['f', 'i', 'b']         ['a']
-['g', 'e', 'i', 'b']            ['f', 'a']
-['e', 'i', 'b']         ['g', 'f', 'a']
-['j', 'i', 'b']         ['e', 'g', 'f', 'a']
-['i', 'b']          ['j', 'e', 'g', 'f', 'a']
-Goal node found
-'''
-
 
 
 
