@@ -21,7 +21,7 @@ class Graph:
     def dfs(self,start,goal):
         opened,closed=[start],[]
         while opened:
-            p=opened.pop(0)
+            p=opened.pop()
             closed.append(p)
             if p==goal:print('Goal node found');return closed
             c=0
