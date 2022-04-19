@@ -1,78 +1,77 @@
-'''Best First Search'''
+#Best first search
+
 from collections import defaultdict
+
 class Graph:
-  def __init__(self,n,h):
-    self.n=n
-    self.h=h
-    self.graph=defaultdict(list)
-    
-  def addEdge(self,u,v):
-    self.graph[u].append(v)
-    self.graph[v].append(u)
-  
-  def bestfs(self,start,goal):
-    print('Best First Search : ')
-    print("open","close",sep='\t\t\t')
-    opened,closed=[],[]
+  def __init__(self):
+    self.g = defaultdict(list)
+    self.h = {}
+
+  def addh(self,v,value):
+    self.h[v]=value
+
+  def addedge(self,u,v):
+    self.g[u].append(v)
+    self.g[v].append(u)
+
+  def pgraph(self):
+    print(self.g)
+    print(self.h)
+
+  def bfs(self,start,goal):
+    opened,closed = [],[]
     opened.append(start)
-    print(opened, closed, sep='\t\t\t')
     while opened:
-      p=opened.pop(0)
-      closed.append(p)
-      #Goal node
-      if p==goal:
-        print(opened,closed,sep='\t\t\t')
-        print('Goal node found');return
-      #Successors Generation
-      for v in self.graph[p]:
-        if v not in opened and v not in closed:opened.append(v)
-      opened.sort(key=lambda x: self.h[x])
-      print(opened,closed,sep='\t\t\t')
-    print('Goal node not found')
+      t = opened.pop(0)
+      closed.append(t)
+      if t == goal: print("Goal found"); print(opened, " ", closed); return 1
+      for i in self.g[t]:
+        if i not in closed:
+          opened.append(i)
+      opened.sort(key = lambda x: self.h[x])
+      print(opened, " ", closed)
+    print("Not found")
 
-n=int(input('Enter no.of nodes: '))
-h={}
-for _ in range(n):
-  u,i=input('Enter node and it\'s heuristic: ').split()
-  h[u]=int(i)
-g=Graph(n,h)
-m=int(input('Enter no.of edges: '))
-for _ in range(m):
-  u,v=input('Enter edge nodes: ').split()
-  g.addEdge(u,v)
-start,goal=input('Enter start and goal states: ').split()
-g.bestfs(start,goal)
 
-# Sample input: 
+if __name__=='__main__':
+
+  g = Graph()
+  n = int(input("no.of nodes???"))
+  m = int(input("no.of edges???"))
+  for i in range(m):
+    u,v = input().split()
+    g.addedge(u,v)
+  for i in range(n):
+    li = list(map(str,input().split()))
+    g.addh(li[0],int(li[1]))
+
+  #g.pgraph()
+  g.bfs('a','e')
+
 '''
-7
-a 12
-b 11
-c 10
-d 5
-e 3
-f 4
-i 9
-6
+no.of nodes???7
+no.of edges???6
 a b
 a c
 b d
 b e
 b f
 c i
-a e
-'''
-# Sample output: 
-'''
-Best First Search : 
-open			close
-['a']			[]
-['c', 'b']			['a']
-['i', 'b']			['a', 'c']
-['b']			['a', 'c', 'i']
-['e', 'f', 'd']			['a', 'c', 'i', 'b']
-['f', 'd']			['a', 'c', 'i', 'b', 'e']
-Goal node found
+a 25
+b 11
+c 10
+d 5
+e 3
+f 4
+i 9
+defaultdict(<class 'list'>, {'a': ['b', 'c'], 'b': ['a', 'd', 'e', 'f'], 'c': ['a', 'i'], 'd': ['b'], 'e': ['b'], 'f': ['b'], 'i': ['c']})
+{'a': 25, 'b': 11, 'c': 10, 'd': 5, 'e': 3, 'f': 4, 'i': 9}
+['c', 'b']   ['a']
+['i', 'b']   ['a', 'c']
+['b']   ['a', 'c', 'i']
+['e', 'f', 'd']   ['a', 'c', 'i', 'b']
+Goal found
+['f', 'd']   ['a', 'c', 'i', 'b', 'e']
 '''
 
 
@@ -242,7 +241,7 @@ if __name__=='__main__':
   g.hill(u,v)
   
   #SAMPLE INPUT & OUTPUT
-  '''
+'''
 no.of nodes???12
 a 10
 b 10
@@ -279,7 +278,6 @@ a j
 Goal found
 ['g', 'i']   ['a', 'b', 'd', 'c', 'h', 'f', 'e', 'j']
 '''
-
 
 
 '''Beam Search'''
